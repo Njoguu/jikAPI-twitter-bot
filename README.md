@@ -1,5 +1,9 @@
 # jikAPI-twitter-bot
 
+![license](https://img.shields.io/github/license/Njoguu/jikAPI-twitter-bot?color=blue&style=flat-square) <br>
+![issues](https://img.shields.io/github/issues-raw/Njoguu/jikAPI-twitter-bot?style=flat-square)
+![pull requests](https://img.shields.io/github/issues-pr-raw/Njoguu/jikAPI-twitter-bot?style=flat-square)
+
 jikAPI Twitter Bot is a bot designed to interact with the [jikAPI](https://twitter.com/@the_jikAPI) Twitter account. The bot is programmed to perform certain actions automatically,to promote and increase the visibility of the [jikAPI](https://twitter.com/@the_jikAPI) account on Twitter.
 
 <br>
