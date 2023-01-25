@@ -20,11 +20,11 @@ def like_mentions():
     for mention in mentions:
         try:
             # Only like tweets that have been posted after 2 minutes 
-            time.sleep(120)
+            time.sleep(10)
             api.create_favorite(mention.id)
             print(f"Liked tweet by {mention.user.screen_name}")
-        except Exception as err:
-            print(f"Error! {err}")
+        except tweepy.TweepyException as e:
+            print(f"Error! {e}")
 
 def retweet_mentions():
     # Find tweets that mention the account
@@ -32,11 +32,11 @@ def retweet_mentions():
     for mention in mentions:
         try:
             # Only retweet tweets that have been posted after 2 minutes 
-            time.sleep(120)
+            time.sleep(10)
             api.retweet(mention.id)
             print(f"Retweeted tweet by {mention.user.screen_name}")
-        except Exception as err:
-            print(f"Error! {err}")
+        except tweepy.TweepyException as e:
+            print(f"Error! {e}")
 
 def like_tweets():
     # TODO --> Find and like Tweets with certain keywords
