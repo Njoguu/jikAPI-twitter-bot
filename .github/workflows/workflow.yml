@@ -1,4 +1,4 @@
-name: jikAPI-Twitter-BotApplication
+name: jikAPI-Twitter-Bot
 
 on: [push]
 
