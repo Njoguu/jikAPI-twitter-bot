@@ -1,14 +1,16 @@
 import tweepy
-import time, os
+import time
+from os import environ
 from dotenv import load_dotenv
 
 load_dotenv()  # take environment variables from .env file
+INTERVAL = 60 * 60 # --> Check mentions every hour
 
 # Twitter API keys
-api_key = os.getenv('API_KEY')
-api_key_secret = os.getenv('API_KEY_SECRET')
-access_token = os.getenv('ACCESS_TOKEN')
-access_token_secret = os.getenv('ACCESS_TOKEN_SECRET')
+api_key = environ['API_KEY']
+api_key_secret = environ['API_KEY_SECRET']
+access_token = environ['ACCESS_TOKEN']
+access_token_secret = environ['ACCESS_TOKEN_SECRET']
 
 # Authenticate with the Twitter API
 auth = tweepy.OAuth1UserHandler(api_key, api_key_secret, access_token, access_token_secret)
@@ -19,10 +21,11 @@ def like_mentions():
     mentions = api.mentions_timeline()
     for mention in mentions:
         try:
-            # Only like tweets that have been posted after 2 minutes 
-            time.sleep(10)
+            # like tweets that have been posted after 4 minutes
+            time.sleep(240)
             api.create_favorite(mention.id)
             print(f"Liked tweet by {mention.user.screen_name}")
+            time.sleep(INTERVAL)
         except tweepy.TweepyException as e:
             print(f"Error! {e}")
 
@@ -31,10 +34,11 @@ def retweet_mentions():
     mentions = api.mentions_timeline()
     for mention in mentions:
         try:
-            # Only retweet tweets that have been posted after 2 minutes 
-            time.sleep(10)
+            # retweet tweets that have been posted after 4 minutes
+            time.sleep(240)
             api.retweet(mention.id)
             print(f"Retweeted tweet by {mention.user.screen_name}")
+            time.sleep(INTERVAL)
         except tweepy.TweepyException as e:
             print(f"Error! {e}")
 
@@ -44,6 +48,8 @@ def like_tweets():
 
 # Don't touch this 
 def run_bot():
+    print("*"*10 + "STARTING UP BOT" + "*"*10)
+    print("*"*10 + "LISTENING..." + "*"*10)
     while True:
         like_mentions()
         retweet_mentions()
