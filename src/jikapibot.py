@@ -25,7 +25,6 @@ def like_mentions():
             time.sleep(240)
             api.create_favorite(mention.id)
             print(f"Liked tweet by {mention.user.screen_name}")
-            time.sleep(INTERVAL)
         except tweepy.TweepyException as e:
             print(f"Error! {e}")
 
@@ -35,10 +34,8 @@ def retweet_mentions():
     for mention in mentions:
         try:
             # retweet tweets that have been posted after 4 minutes
-            time.sleep(240)
             api.retweet(mention.id)
             print(f"Retweeted tweet by {mention.user.screen_name}")
-            time.sleep(INTERVAL)
         except tweepy.TweepyException as e:
             print(f"Error! {e}")
 
