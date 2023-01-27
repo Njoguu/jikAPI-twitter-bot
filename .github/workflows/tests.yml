@@ -1,4 +1,4 @@
-name: Test Twitter Bot
+name: Tests
 
 on : [push]
 jobs:
