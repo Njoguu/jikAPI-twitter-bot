@@ -14,11 +14,22 @@ access_token_secret = environ['ACCESS_TOKEN_SECRET']
 
 # Authenticate with the Twitter API
 auth = tweepy.OAuth1UserHandler(api_key, api_key_secret, access_token, access_token_secret)
-api = tweepy.API(auth, wait_on_rate_limit=True)
+api = tweepy.API(auth)
+
+# Limit Handler
+def limit_handle(cursor):
+    try:
+        while True:
+            yield cursor.next()
+    except tweepy.TooManyRequests:
+        print("Limit reached, Sleeping!")
+        time.sleep(8)
+    except StopIteration:
+            pass 
 
 def like_mentions():
     # Find tweets that mention the account
-    mentions = api.mentions_timeline()
+    mentions = limit_handle(tweepy.Cursor(api.mentions_timeline).items())
     for mention in mentions:
         try:
             # like tweets that have been posted after 4 minutes
@@ -30,7 +41,7 @@ def like_mentions():
 
 def retweet_mentions():
     # Find tweets that mention the account
-    mentions = api.mentions_timeline()
+    mentions = limit_handle(tweepy.Cursor(api.mentions_timeline).items())
     for mention in mentions:
         try:
             # retweet tweets that have been posted after 4 minutes
