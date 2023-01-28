@@ -50,9 +50,18 @@ def retweet_mentions():
         except tweepy.TweepyException as e:
             print(f"Error! {e}")
 
-def like_tweets():
-    # TODO --> Find and like Tweets with certain keywords
-    pass
+def like_tweets(tweet_hashtags): 
+    # Check if the tweet contains any of the hashtags you are interested in
+    for tweet in limit_handle(tweepy.Cursor(api.home_timeline).items(10)):    
+        if any(hashtag in tweet.text for hashtag in tweet_hashtags):
+            try:
+                api.create_favorite(tweet.id)
+                print(f"Liked tweet by {tweet.user.screen_name}")
+            except tweepy.errors.Forbidden as err:
+                if err.api_codes == 139:
+                    print("Tweet already liked")
+                else:
+                    print(f"Error! {err}")
 
 # Don't touch this 
 def run_bot():
@@ -61,6 +70,11 @@ def run_bot():
     while True:
         like_mentions()
         retweet_mentions()
+        like_tweets(tweet_hashtags)
 
 if __name__ == '__main__':
+    tweet_hashtags = ["#jobs", "#ikokazike", "#jobsearch", "#hiring", "#JobOpportunitiesKE",
+        "#HiringKE","#CareerOpportunitiesKE","#JobsinKenya", "#KenyanJobs", "#EmploymentKE",
+        "#WorkinKenya","#CareerKE","#JobVacanciesKE", "#KenyaEmployment"
+    ]
     run_bot()
