@@ -1,23 +1,13 @@
-name: CI-automerge
-
-on:
-  pull_request:
-    branches:
-      - main
+name: Auto-merge Dependabot
+on: pull_request
 
 jobs:
   automerge:
     runs-on: ubuntu-latest
     if: github.actor == 'Njoguu'
-
     steps:
-      - name: Merge pull request
-        if: always()
-        uses: peter-evans/create-pull-request@v4
+      - uses: peter-evans/enable-pull-request-automerge@v2
         with:
           token: ${{ secrets.GH_TOKEN }}
           pull-request-number: ${{ github.event.pull_request.number }}
           merge-method: squash
-          commit-message: Automated merge of pull request
-          title: Automated merge of pull request
-          branch: main
