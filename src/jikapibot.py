@@ -1,7 +1,8 @@
-import tweepy
 import time
+import tweepy
 from os import environ
 from dotenv import load_dotenv
+from better_profanity import profanity
 
 load_dotenv()  # take environment variables from .env file
 INTERVAL = 60 * 60 # --> Check mentions every hour
@@ -33,9 +34,12 @@ def like_mentions():
     for mention in mentions:
         try:
             # like tweets that have been posted after 4 minutes
-            time.sleep(240)
-            api.create_favorite(mention.id)
-            print(f"Liked tweet by {mention.user.screen_name}")
+            if not profanity.contains_profanity(mention.text):
+                time.sleep(240)
+                api.create_favorite(mention.id)
+                print(f"Liked tweet by {mention.user.screen_name}")
+            else: 
+                print(f"Tweet contains profanity! Did not like tweet!")
         except tweepy.TweepyException as e:
             print(f"Error! {e}")
 
@@ -45,8 +49,11 @@ def retweet_mentions():
     for mention in mentions:
         try:
             # retweet tweets that have been posted after 4 minutes
-            api.retweet(mention.id)
-            print(f"Retweeted tweet by {mention.user.screen_name}")
+            if not profanity.contains_profanity(mention.text):
+                api.retweet(mention.id)
+                print(f"Retweeted tweet by {mention.user.screen_name}")
+            else:
+                print(f"Tweet contains profanity! Did not retweet mention!")
         except tweepy.TweepyException as e:
             print(f"Error! {e}")
 
@@ -55,8 +62,11 @@ def like_tweets(tweet_hashtags):
     for tweet in limit_handle(tweepy.Cursor(api.home_timeline).items(10)):    
         if any(hashtag in tweet.text for hashtag in tweet_hashtags):
             try:
-                api.create_favorite(tweet.id)
-                print(f"Liked tweet by {tweet.user.screen_name}")
+                if not profanity.contains_profanity(tweet.text):
+                    api.create_favorite(tweet.id)
+                    print(f"Liked tweet by {tweet.user.screen_name}")
+                else:
+                    print(f"Tweet contains profanity! Did not like tweet!")
             except tweepy.errors.Forbidden as err:
                 if err.api_codes == 139:
                     print("Tweet already liked")
