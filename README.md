@@ -3,7 +3,7 @@
 ![license](https://img.shields.io/github/license/Njoguu/jikAPI-twitter-bot?color=blue&style=flat-square) <br>
 ![issues](https://img.shields.io/github/issues-raw/Njoguu/jikAPI-twitter-bot?style=flat-square)
 ![pull requests](https://img.shields.io/github/issues-pr-raw/Njoguu/jikAPI-twitter-bot?style=flat-square) <br>
-[![jikAPI-Twitter-Bot](https://github.com/Njoguu/jikAPI-twitter-bot/actions/workflows/workflow.yml/badge.svg)](https://github.com/Njoguu/jikAPI-twitter-bot/actions/workflows/workflow.yml) 
+[![jikAPI-Twitter-Bot](https://github.com/Njoguu/jikAPI-twitter-bot/actions/workflows/workflow.yml/badge.svg)](https://github.com/Njoguu/jikAPI-twitter-bot/actions/workflows/workflow.yml) [![Tests](https://github.com/Njoguu/jikAPI-twitter-bot/actions/workflows/tests.yml/badge.svg)](https://github.com/Njoguu/jikAPI-twitter-bot/actions/workflows/tests.yml)
 [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/cloudposse.svg?style=social&label=Follow%20%40jikAPI)](https://twitter.com/@the_jikAPI)
 
 jikAPI Twitter Bot is a bot designed to interact with the [jikAPI](https://twitter.com/@the_jikAPI) Twitter account. The bot is programmed to perform certain actions automatically,to promote and increase the visibility of the [jikAPI](https://twitter.com/@the_jikAPI) account on Twitter.
