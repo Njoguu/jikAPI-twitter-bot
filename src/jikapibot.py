@@ -1,11 +1,12 @@
 import time
+import json
 import tweepy
+import requests
 from os import environ
 from dotenv import load_dotenv
 from better_profanity import profanity
 
 load_dotenv()  # take environment variables from .env file
-INTERVAL = 60 * 60 # --> Check mentions every hour
 
 # Twitter API keys
 api_key = environ['API_KEY']
@@ -73,6 +74,35 @@ def like_tweets(tweet_hashtags):
                 else:
                     print(f"Error! {err}")
 
+def tweet_commit_messages():
+    owner = 'Njoguu'
+    repo = 'jikAPI'
+
+    # Post the commit message
+    try: 
+        url = f'https://api.github.com/repos/{owner}/{repo}/commits'
+
+        # make the API request
+        response = requests.get(url)
+        data = json.loads(response.text)[0]
+        message = data['commit']['message']
+
+        # Get the latest tweet
+        tweets = api.user_timeline(count=1)
+
+        # Check if the tweet already exists
+        for tweet in tweets:
+            if tweet.text == message:
+                # Wait until a new message is available
+                break
+        else:
+            # Tweet the message
+            api.update_status(status=message) 
+            print(f"Tweeted: {message}")
+    except Exception as err:
+        print(err)
+
+
 # Don't touch this 
 def run_bot():
     print("*"*10 + "STARTING UP BOT" + "*"*10)
@@ -81,6 +111,7 @@ def run_bot():
         like_mentions()
         retweet_mentions()
         like_tweets(tweet_hashtags)
+        tweet_commit_messages()
 
 if __name__ == '__main__':
     tweet_hashtags = ["#jobs", "#ikokazike", "#jobsearch", "#hiring", "#JobOpportunitiesKE",
