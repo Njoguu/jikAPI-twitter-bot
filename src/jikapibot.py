@@ -1,5 +1,6 @@
 import time
 import json
+import openai
 import tweepy
 import requests
 from os import environ
@@ -17,6 +18,11 @@ access_token_secret = environ['ACCESS_TOKEN_SECRET']
 # Authenticate with the Twitter API
 auth = tweepy.OAuth1UserHandler(api_key, api_key_secret, access_token, access_token_secret)
 api = tweepy.API(auth)
+
+# OpenAI API setup
+openai.organization = environ["OPENAI_ORGANIZATION"]
+openai.api_key = environ["OPENAI_API_KEY"]
+
 
 # Limit Handler
 def limit_handle(cursor):
@@ -102,6 +108,35 @@ def tweet_commit_messages():
     except Exception as err:
         print(err)
 
+def reply_to_messages():
+    # get the tweet to reply to
+    tweets = api.mentions_timeline(count=1)
+    for tweet in tweets:
+        try:
+            if not profanity.contains_profanity(tweet.text):
+                # use openai's API to reply to the tweet 
+                prompt = f"Reply to this tweet: {tweet.text}"
+                req = openai.Completion.create(
+                    model="text-davinci-003",
+                    prompt=prompt,
+                    temperature=0.3,
+                    max_tokens=1024,
+                    n=1,
+                    stop=None
+                )
+                response = req.get('choices')[0]['text'].strip()
+
+                # Post the generated reply as a reply to the original tweet
+                api.update_status(
+                    status=response,
+                    in_reply_to_status_id=tweet.id,
+                    auto_populate_reply_metadata=True
+                )
+                print(f"Replied to tweet by {tweet.user.screen_name}")
+            else:
+                print(f"Tweet contains profanity! Did not reply to mention!")
+        except tweepy.TweepyException as e:
+            print(f"Error! {e}")
 
 # Don't touch this 
 def run_bot():
@@ -112,6 +147,8 @@ def run_bot():
         retweet_mentions()
         like_tweets(tweet_hashtags)
         tweet_commit_messages()
+        reply_to_messages()
+       
 
 if __name__ == '__main__':
     tweet_hashtags = ["#jobs", "#ikokazike", "#jobsearch", "#hiring", "#JobOpportunitiesKE",
