@@ -42,7 +42,6 @@ def like_mentions():
         try:
             # like tweets that have been posted after 4 minutes
             if not profanity.contains_profanity(mention.text):
-                time.sleep(240)
                 api.create_favorite(mention.id)
                 print(f"Liked tweet by {mention.user.screen_name}")
             else: 
@@ -147,7 +146,7 @@ def run_bot():
         retweet_mentions()
         like_tweets(tweet_hashtags)
         tweet_commit_messages()
-        reply_to_messages()
+        # reply_to_messages()
        
 
 if __name__ == '__main__':
